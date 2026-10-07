@@ -867,7 +867,11 @@ toast(name + " section coming soon");
 }
 
 }
-
+document.querySelectorAll(".category").forEach(function(button) {
+  button.addEventListener("click", function() {
+    toast("Category selected: " + button.innerText.trim());
+  });
+});
 </script>
 
 </body>
