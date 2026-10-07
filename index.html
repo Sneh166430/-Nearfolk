@@ -1,39 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<title>Nearfolk — Discover Nearby</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
---dark:#111827;
---dark2:#1f2937;
---purple:#6d5dfc;
---lightpurple:#eeeaff;
---text:#172033;
---muted:#7b8496;
---bg:#f7f8fc;
---white:#fff;
---border:#e8eaf0;
---green:#18a875;
-}
-body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-background:#e5e7eb;
-color:var(--text);
-min-height:100vh;
-}
-button,input{font:inherit}
-button{border:0;cursor:pointer}
-.app{
-width:100%;
-max-width:480px;
-min-height:100vh;
-margin:auto;
-background:var(--bg);
-padding-bottom:85px;
+
 }
 /* HEADER */
 .hero{
@@ -600,34 +565,7 @@ toast("Removed from saved");
 function category(name){
 const result=document.getElementById("result");
 document.getElementById("resultTitle").textContent=name+" near you";
-document.getElementById("resultText").textContent=
-"Showing popular "+name.toLowerCase()+" businesses around Kanpur.";
-result.classList.add("show");
-result.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-}
-function searchBusiness(){
-const input=document.getElementById("search");
-const result=document.getElementById("result");
-if(input.value.trim()===""){
-result.classList.remove("show");
-return;
-}
-result.classList.add("show");
-document.getElementById("resultTitle").textContent=
-"Searching for “"+input.value+"”";
-document.getElementById("resultText").textContent=
-"Nearfolk is ready to discover matching local businesses.";
-}
-function nav(button,name){
-document.querySelectorAll(".nav").forEach(item=>{
-item.classList.remove("active");
-});
-button.classList.add("active");
-if(name!=="Home"){
-toast(name+" section coming soon");
+document.getElementById("resultText").
 }
 }
 </script>
