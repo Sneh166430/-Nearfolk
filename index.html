@@ -1,573 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<meta name="description" content="Nearfolk - Discover local businesses, offers and services near you.">
+<title>Nearfolk — Discover Nearby</title>
 
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-/* HEADER */
-.hero{
-background:var(--dark);
-color:white;
-padding:24px 20px 26px;
-border-radius:0 0 28px 28px;
+
+:root {
+  --dark: #111827;
+  --purple: #6d5dfc;
+  --light-purple: #eeeaff;
+  --text: #172033;
+  --muted: #7b8496;
+  --bg: #f7f8fc;
+  --white: #ffffff;
+  --border: #e8eaf0;
+  --green: #18a875;
+  --pink: #ef476f;
 }
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:24px;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #e5e7eb;
+  color: var(--text);
+  min-height: 100vh;
 }
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
+
+button,
+input {
+  font: inherit;
 }
-.logo-mark{
-width:42px;
-height:42px;
-border-radius:14px;
-display:grid;
-place-items:center;
-background:linear-gradient(135deg,#8071ff,#5748df);
-font-weight:900;
-font-size:21px;
-box-shadow:0 8px 20px rgba(109,93,252,.35);
+
+button {
+  border: none;
+  cursor: pointer;
 }
-.logo-name{
-font-size:22px;
-font-weight:800;
-letter-spacing:-.5px;
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  margin: auto;
+  background: var(--bg);
+  padding-bottom: 85px;
 }
-.profile{
-width:40px;
-height:40px;
-border-radius:50%;
-background:rgba(255,255,255,.12);
-color:white;
-font-size:18px;
+
+/* HERO */
+
+.hero {
+  background: var(--dark);
+  color: white;
+  padding: 24px 20px 26px;
+  border-radius: 0 0 28px 28px;
 }
-.location{
-font-size:13px;
-color:#cbd2df;
-margin-bottom:8px;
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
-.hero h1{
-font-size:29px;
-line-height:1.15;
-letter-spacing:-1px;
-margin-bottom:17px;
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.search{
-background:white;
-border-radius:15px;
-padding:4px 6px 4px 14px;
-display:flex;
-align-items:center;
-gap:9px;
+
+.logo-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #8071ff, #5748df);
+  font-weight: 900;
+  font-size: 21px;
+  box-shadow: 0 8px 20px rgba(109, 93, 252, 0.35);
 }
-.search-icon{
-font-size:20px;
-color:#8b93a3;
+
+.logo-name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
-.search input{
-flex:1;
-border:0;
-outline:0;
-padding:11px 0;
-min-width:0;
-color:var(--text);
+
+.profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  color: white;
+  font-size: 18px;
 }
-.search input::placeholder{
-color:#a0a7b5;
+
+.location {
+  font-size: 13px;
+  color: #cbd2df;
+  margin-bottom: 8px;
 }
-.filter{
-width:39px;
-height:39px;
-border-radius:11px;
-background:var(--purple);
-color:white;
-font-size:18px;
+
+.hero h1 {
+  font-size: 29px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 17px;
 }
+
+/* SEARCH */
+
+.search {
+  background: white;
+  border-radius: 15px;
+  padding: 4px 6px 4px 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.search-icon {
+  font-size: 20px;
+  color: #8b93a3;
+}
+
+.search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 11px 0;
+  min-width: 0;
+  color: var(--text);
+}
+
+.search input::placeholder {
+  color: #a0a7b5;
+}
+
+.filter {
+  width: 39px;
+  height: 39px;
+  border-radius: 11px;
+  background: var(--purple);
+  color: white;
+  font-size: 18px;
+}
+
 /* CONTENT */
-.content{
-padding:22px 18px;
+
+.content {
+  padding: 22px 18px;
 }
-.section{
-margin-bottom:28px;
+
+.section {
+  margin-bottom: 28px;
 }
-.heading{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:14px;
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
 }
-.heading h2{
-font-size:18px;
-letter-spacing:-.3px;
+
+.heading h2 {
+  font-size: 18px;
+  letter-spacing: -0.3px;
 }
-.see{
-background:none;
-color:var(--purple);
-font-size:13px;
-font-weight:700;
+
+.see {
+  background: none;
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
 }
+
 /* CATEGORIES */
-.categories{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
-.category{
-background:white;
-border:1px solid var(--border);
-border-radius:17px;
-padding:13px 5px;
-text-align:center;
+
+.category {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 13px 5px;
+  text-align: center;
 }
-.category:active{
-transform:scale(.96);
+
+.category:active {
+  transform: scale(0.96);
 }
-.category-icon{
-width:44px;
-height:44px;
-margin:auto auto 7px;
-border-radius:14px;
-display:grid;
-place-items:center;
-background:var(--lightpurple);
-font-size:21px;
+
+.category-icon {
+  width: 44px;
+  height: 44px;
+  margin: auto auto 7px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--light-purple);
+  font-size: 21px;
 }
-.category span{
-font-size:11px;
-font-weight:700;
-color:#4e5667;
+
+.category span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4e5667;
 }
+
+/* RESULT */
+
+.result {
+  display: none;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 16px;
+  margin-top: 15px;
+}
+
+.result.show {
+  display: block;
+}
+
+.result h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.result p {
+  font-size: 12px;
+  color: var(--muted);
+}
+
 /* FEATURED */
-.featured{
-display:flex;
-gap:13px;
-overflow-x:auto;
-scrollbar-width:none;
+
+.featured {
+  display: flex;
+  gap: 13px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.featured::-webkit-scrollbar{
-display:none;
+
+.featured::-webkit-scrollbar {
+  display: none;
 }
-.feature-card{
-min-width:245px;
-background:white;
-border:1px solid var(--border);
-border-radius:19px;
-overflow:hidden;
-box-shadow:0 10px 28px rgba(17,24,39,.07);
+
+.feature-card {
+  min-width: 245px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(17,24,39,0.07);
 }
-.feature-image{
-height:125px;
-display:grid;
-place-items:center;
-font-size:43px;
-background:linear-gradient(135deg,#ded9ff,#f5f2ff);
+
+.feature-image {
+  height: 125px;
+  display: grid;
+  place-items: center;
+  font-size: 43px;
+  background: linear-gradient(135deg, #ded9ff, #f5f2ff);
 }
-.feature-info{
-padding:13px;
+
+.feature-info {
+  padding: 13px;
 }
-.feature-title{
-font-size:15px;
-font-weight:800;
-margin-bottom:5px;
+
+.feature-title {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 5px;
 }
-.meta{
-font-size:12px;
-color:var(--muted);
-margin-bottom:8px;
+
+.meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
 }
-.rating{
-font-size:12px;
-font-weight:700;
+
+.rating {
+  font-size: 12px;
+  font-weight: 700;
 }
-.rating span{
-color:#f59e0b;
+
+.rating span {
+  color: #f59e0b;
 }
+
 /* OFFER */
-.offer{
-background:linear-gradient(135deg,#6d5dfc,#4d3ed0);
-color:white;
-border-radius:20px;
-padding:18px;
-display:flex;
-justify-content:space-between;
-align-items:center;
+
+.offer {
+  background: linear-gradient(135deg, #6d5dfc, #4d3ed0);
+  color: white;
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.offer small{
-font-size:10px;
-opacity:.8;
+
+.offer small {
+  font-size: 10px;
+  opacity: 0.8;
 }
-.offer h3{
-font-size:20px;
-margin:4px 0;
+
+.offer h3 {
+  font-size: 20px;
+  margin: 4px 0;
 }
-.offer p{
-font-size:12px;
-opacity:.85;
+
+.offer p {
+  font-size: 12px;
+  opacity: 0.85;
 }
-.offer button{
-background:white;
-color:var(--purple);
-padding:9px 13px;
-border-radius:10px;
-font-size:12px;
-font-weight:800;
+
+.offer button {
+  background: white;
+  color: var(--purple);
+  padding: 9px 13px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
 }
+
 /* BUSINESSES */
-.business-list{
-display:grid;
-gap:12px;
+
+.business-list {
+  display: grid;
+  gap: 12px;
 }
-.business{
-background:white;
-border:1px solid var(--border);
-border-radius:18px;
-padding:13px;
-display:flex;
-gap:12px;
-align-items:center;
+
+.business {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 13px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
-.business-photo{
-width:65px;
-height:65px;
-flex-shrink:0;
-border-radius:15px;
-display:grid;
-place-items:center;
-font-size:28px;
-background:#eef0ff;
+
+.business-photo {
+  width: 65px;
+  height: 65px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  background: #eef0ff;
 }
-.business-info{
-flex:1;
-min-width:0;
+
+.business-info {
+  flex: 1;
+  min-width: 0;
 }
-.business-info h3{
-font-size:14px;
-margin-bottom:4px;
+
+.business-info h3 {
+  font-size: 14px;
+  margin-bottom: 4px;
 }
-.business-info p{
-font-size:11px;
-color:var(--muted);
-margin-bottom:6px;
+
+.business-info p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
 }
-.business-bottom{
-display:flex;
-gap:9px;
-font-size:11px;
+
+.business-bottom {
+  display: flex;
+  gap: 9px;
+  font-size: 11px;
 }
-.open{
-color:var(--green);
-font-weight:700;
+
+.open {
+  color: var(--green);
+  font-weight: 700;
 }
-.heart{
-width:35px;
-height:35px;
-border-radius:11px;
-background:#f5f5fa;
-color:#707889;
-font-size:17px;
+
+.heart {
+  width: 35px;
+  height: 35px;
+  border-radius: 11px;
+  background: #f5f5fa;
+  color: #707889;
+  font-size: 17px;
 }
-.heart.saved{
-color:#ef476f;
-background:#fff0f4;
+
+.heart.saved {
+  color: var(--pink);
+  background: #fff0f4;
 }
-/* SEARCH RESULT */
-.result{
-display:none;
-background:white;
-border:1px solid var(--border);
-border-radius:17px;
-padding:16px;
-margin-top:15px;
-}
-.result.show{
-display:block;
-}
-.result h3{
-font-size:15px;
-margin-bottom:5px;
-}
-.result p{
-font-size:12px;
-color:var(--muted);
-}
+
 /* BOTTOM NAV */
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:100%;
-max-width:480px;
-height:72px;
-background:rgba(255,255,255,.96);
-backdrop-filter:blur(15px);
-border-top:1px solid var(--border);
-display:grid;
-grid-template-columns:repeat(5,1fr);
-z-index:20;
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: 72px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  z-index: 20;
 }
-.nav{
-background:none;
-color:#8a91a1;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:4px;
-font-size:10px;
-font-weight:700;
+
+.nav {
+  background: none;
+  color: #8a91a1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
 }
-.nav-icon{
-font-size:20px;
+
+.nav-icon {
+  font-size: 20px;
 }
-.nav.active{
-color:var(--purple);
+
+.nav.active {
+  color: var(--purple);
 }
+
 /* TOAST */
-.toast{
-position:fixed;
-left:50%;
-bottom:88px;
-transform:translate(-50%,20px);
-background:var(--dark);
-color:white;
-padding:11px 16px;
-border-radius:12px;
-font-size:12px;
-opacity:0;
-pointer-events:none;
-transition:.25s;
-z-index:50;
-white-space:nowrap;
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 88px;
+  transform: translate(-50%, 20px);
+  background: var(--dark);
+  color: white;
+  padding: 11px 16px;
+  border-radius: 12px;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s;
+  z-index: 50;
+  white-space: nowrap;
 }
-.toast.show{
-opacity:1;
-transform:translate(-50%,0);
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
 <header class="hero">
+
 <div class="topbar">
+
 <div class="logo">
 <div class="logo-mark">N</div>
 <div class="logo-name">Nearfolk</div>
 </div>
 
+<button class="profile" onclick="toast('Profile coming soon')">
 👤
+</button>
 
 </div>
+
 <div class="location">📍 Kanpur, India</div>
-<h1>Discover what's<br>around you.</h1>
+
+<h1>
+Discover what's<br>
+around you.
+</h1>
+
 <div class="search">
+
 <div class="search-icon">⌕</div>
 
 <input
-id=“search”
-type=“text”
-placeholder=“Search businesses, services…”
-oninput=“searchBusiness()”
+id="search"
+type="text"
+placeholder="Search businesses, services..."
+oninput="searchBusiness()"
+>
 
+<button class="filter" onclick="toast('Filters coming soon')">
 ☷
+</button>
 
 </div>
+
 </header>
+
 <main class="content">
+
 <section class="section">
+
 <div class="heading">
 <h2>Explore Categories</h2>
-<button class="see" onclick="toast('All categories coming soon')">See all</button>
+<button class="see" onclick="toast('All categories coming soon')">
+See all
+</button>
 </div>
+
 <div class="categories">
+
 <button class="category" onclick="category('Food')">
 <div class="category-icon">🍽️</div>
 <span>Food</span>
 </button>
+
 <button class="category" onclick="category('Shopping')">
 <div class="category-icon">🛍️</div>
 <span>Shopping</span>
 </button>
+
 <button class="category" onclick="category('Beauty')">
 <div class="category-icon">💇</div>
 <span>Beauty</span>
 </button>
+
 <button class="category" onclick="category('Health')">
 <div class="category-icon">🩺</div>
 <span>Health</span>
 </button>
+
 <button class="category" onclick="category('Cafés')">
 <div class="category-icon">☕</div>
 <span>Cafés</span>
 </button>
+
 <button class="category" onclick="category('Services')">
 <div class="category-icon">🔧</div>
 <span>Services</span>
 </button>
+
 <button class="category" onclick="category('Stay')">
 <div class="category-icon">🏨</div>
 <span>Stay</span>
 </button>
+
 <button class="category" onclick="category('Education')">
 <div class="category-icon">🎓</div>
 <span>Education</span>
 </button>
+
 </div>
+
 <div id="result" class="result">
 <h3 id="resultTitle"></h3>
 <p id="resultText"></p>
 </div>
+
 </section>
+
 <section class="section">
+
 <div class="heading">
 <h2>Featured Nearby</h2>
-<button class="see" onclick="toast('More businesses coming soon')">See all</button>
+<button class="see" onclick="toast('More businesses coming soon')">
+See all
+</button>
 </div>
+
 <div class="featured">
+
 <article class="feature-card">
+
 <div class="feature-image">☕</div>
+
 <div class="feature-info">
 <div class="feature-title">The Daily Brew</div>
 <div class="meta">Café · 0.8 km away</div>
 <div class="rating"><span>★</span> 4.8 · Popular nearby</div>
 </div>
+
 </article>
+
 <article class="feature-card">
+
 <div class="feature-image">👗</div>
+
 <div class="feature-info">
 <div class="feature-title">Urban Threads</div>
 <div class="meta">Fashion · 1.2 km away</div>
 <div class="rating"><span>★</span> 4.7 · Trending</div>
 </div>
+
 </article>
+
 <article class="feature-card">
+
 <div class="feature-image">🥗</div>
+
 <div class="feature-info">
 <div class="feature-title">Green Bowl</div>
 <div class="meta">Food · 1.5 km away</div>
 <div class="rating"><span>★</span> 4.6 · Healthy choice</div>
 </div>
+
 </article>
+
 </div>
+
 </section>
+
 <section class="section">
+
 <div class="heading">
 <h2>Today's Offers</h2>
-<button class="see" onclick="toast('More offers coming soon')">See all</button>
+<button class="see" onclick="toast('More offers coming soon')">
+See all
+</button>
 </div>
+
 <div class="offer">
+
 <div>
 <small>NEARFOLK EXCLUSIVE</small>
 <h3>Discover. Save. Repeat.</h3>
 <p>Local deals from businesses around you.</p>
 </div>
 
+<button onclick="toast('Offer saved!')">
 Explore
+</button>
 
 </div>
+
 </section>
+
 <section class="section">
+
 <div class="heading">
 <h2>Businesses Near You</h2>
-<button class="see" onclick="toast('Map view coming soon')">Map view</button>
+<button class="see" onclick="toast('Map view coming soon')">
+Map view
+</button>
 </div>
+
 <div class="business-list">
+
 <article class="business">
+
 <div class="business-photo">🍕</div>
+
 <div class="business-info">
+
 <h3>Slice House</h3>
 <p>Pizza & Italian · 1.1 km</p>
+
 <div class="business-bottom">
 <span class="rating"><span>★</span> 4.8</span>
 <span class="open">● Open now</span>
 </div>
+
 </div>
 
+<button class="heart" onclick="save(this)">
 ♡
+</button>
 
 </article>
+
 <article class="business">
+
 <div class="business-photo">🧘</div>
+
 <div class="business-info">
+
 <h3>Balance Studio</h3>
 <p>Fitness & Wellness · 1.8 km</p>
+
 <div class="business-bottom">
 <span class="rating"><span>★</span> 4.9</span>
 <span class="open">● Open now</span>
 </div>
+
 </div>
 
+<button class="heart" onclick="save(this)">
 ♡
+</button>
 
 </article>
+
 <article class="business">
+
 <div class="business-photo">💻</div>
+
 <div class="business-info">
+
 <h3>TechPoint</h3>
 <p>Electronics & Services · 2.3 km</p>
+
 <div class="business-bottom">
 <span class="rating"><span>★</span> 4.6</span>
 <span class="open">● Open now</span>
 </div>
+
 </div>
 
+<button class="heart" onclick="save(this)">
 ♡
+</button>
 
 </article>
+
 </div>
+
 </section>
+
 </main>
+
 <nav class="bottom-nav">
+
 <button class="nav active" onclick="nav(this,'Home')">
 <div class="nav-icon">⌂</div>
 <span>Home</span>
 </button>
+
 <button class="nav" onclick="nav(this,'Explore')">
 <div class="nav-icon">◉</div>
 <span>Explore</span>
 </button>
+
 <button class="nav" onclick="nav(this,'Offers')">
 <div class="nav-icon">🎁</div>
 <span>Offers</span>
 </button>
+
 <button class="nav" onclick="nav(this,'Saved')">
 <div class="nav-icon">♡</div>
 <span>Saved</span>
 </button>
+
 <button class="nav" onclick="nav(this,'Profile')">
 <div class="nav-icon">☺</div>
 <span>Profile</span>
 </button>
+
 </nav>
+
 </div>
+
 <div id="toast" class="toast"></div>
+
 <script>
-function toast(message){
-const box=document.getElementById("toast");
-box.textContent=message;
+
+function toast(message) {
+
+const box = document.getElementById("toast");
+
+box.textContent = message;
+
 box.classList.add("show");
+
 clearTimeout(window.timer);
-window.timer=setTimeout(()=>{
+
+window.timer = setTimeout(function() {
 box.classList.remove("show");
-},1800);
+}, 1800);
+
 }
-function save(button){
+
+
+function save(button) {
+
 button.classList.toggle("saved");
-if(button.classList.contains("saved")){
-button.textContent="♥";
+
+if (button.classList.contains("saved")) {
+
+button.textContent = "♥";
+
 toast("Saved to your favourites");
-}else{
-button.textContent="♡";
+
+} else {
+
+button.textContent = "♡";
+
 toast("Removed from saved");
+
 }
+
 }
-function category(name){
-const result=document.getElementById("result");
-document.getElementById("resultTitle").textContent=name+" near you";
-document.getElementById("resultText").
+
+
+function category(name) {
+
+const result = document.getElementById("result");
+
+document.getElementById("resultTitle").textContent =
+name + " near you";
+
+document.getElementById("resultText").textContent =
+"Showing popular " +
+name.toLowerCase() +
+" businesses around Kanpur.";
+
+result.classList.add("show");
+
+result.scrollIntoView({
+behavior: "smooth",
+block: "center"
+});
+
 }
+
+
+function searchBusiness() {
+
+const input = document.getElementById("search");
+
+const result = document.getElementById("result");
+
+if (input.value.trim() === "") {
+
+result.classList.remove("show");
+
+return;
+
 }
+
+result.classList.add("show");
+
+document.getElementById("resultTitle").textContent =
+'Searching for "' + input.value + '"';
+
+document.getElementById("resultText").textContent =
+"Nearfolk is ready to discover matching local businesses.";
+
+}
+
+
+function nav(button, name) {
+
+document.querySelectorAll(".nav").forEach(function(item) {
+item.classList.remove("active");
+});
+
+button.classList.add("active");
+
+if (name !== "Home") {
+toast(name + " section coming soon");
+}
+
+}
+
 </script>
+
 </body>
 </html>
