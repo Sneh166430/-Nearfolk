@@ -1,3 +1,4 @@
+
 const businesses = [
   {
     name: "The Daily Brew",
@@ -49,7 +50,35 @@ const businesses = [
   }
 ];
 
+// Saved businesses are stored on this device.
 let savedBusinesses = [];
+
+try {
+  savedBusinesses = JSON.parse(
+    localStorage.getItem("nearfolk_saved") || "[]"
+  );
+
+  if (!Array.isArray(savedBusinesses)) {
+    savedBusinesses = [];
+  }
+} catch (error) {
+  savedBusinesses = [];
+}
+
+let currentView = "Home";
+let currentQuery = "";
+let currentCategory = "";
+
+function storeSavedBusinesses() {
+  try {
+    localStorage.setItem(
+      "nearfolk_saved",
+      JSON.stringify(savedBusinesses)
+    );
+  } catch (error) {
+    toast("Could not save on this device");
+  }
+}
 
 function toast(message) {
   let box = document.getElementById("toast");
@@ -64,7 +93,9 @@ function toast(message) {
   box.textContent = message;
   box.classList.add("show");
 
-  setTimeout(function () {
+  clearTimeout(window.nearfolkToastTimer);
+
+  window.nearfolkToastTimer = setTimeout(function () {
     box.classList.remove("show");
   }, 1800);
 }
@@ -73,7 +104,7 @@ function createBusinessCard(business) {
   const isSaved = savedBusinesses.includes(business.name);
 
   return `
-    <div class="business-card">
+    <article class="business-card">
       <div class="business-top">
         <div class="business-icon">${business.icon}</div>
 
@@ -82,8 +113,11 @@ function createBusinessCard(business) {
           <p>${business.description}</p>
         </div>
 
-        <button class="save-btn ${isSaved ? "saved" : ""}"
-          onclick="toggleSave('${business.name}')">
+        <button
+          class="save-btn ${isSaved ? "saved" : ""}"
+          onclick="toggleSave('${business.name}')"
+          aria-label="Save ${business.name}"
+        >
           ${isSaved ? "♥" : "♡"}
         </button>
       </div>
@@ -92,29 +126,24 @@ function createBusinessCard(business) {
         <span class="rating">⭐ ${business.rating}</span>
         <span class="distance">📍 ${business.distance}</span>
       </div>
-    </div>
+    </article>
   `;
 }
 
 function showBusinesses(list, title) {
   const result = document.getElementById("result");
-
-  if (!result) return;
-
-  result.classList.add("show");
-
   const resultTitle = document.getElementById("resultTitle");
   const resultText = document.getElementById("resultText");
 
-  if (resultTitle) {
-    resultTitle.textContent = title;
-  }
+  if (!result || !resultTitle || !resultText) return;
 
-  if (resultText) {
-    resultText.innerHTML = list.length
-      ? `<div class="card-list">${list.map(createBusinessCard).join("")}</div>`
-      : `<div class="empty">No matching businesses found.<br>Try another search.</div>`;
-  }
+  resultTitle.textContent = title;
+
+  resultText.innerHTML = list.length
+    ? `<div class="card-list">${list.map(createBusinessCard).join("")}</div>`
+    : `<div class="empty">No matching demo businesses found. Try another search.</div>`;
+
+  result.classList.add("show");
 
   result.scrollIntoView({
     behavior: "smooth",
@@ -122,17 +151,35 @@ function showBusinesses(list, title) {
   });
 }
 
+function category(name) {
+  currentView = "Category";
+  currentCategory = name;
+  currentQuery = "";
+
+  const matches = businesses.filter(function (business) {
+    return business.category.toLowerCase() === name.toLowerCase();
+  });
+
+  showBusinesses(matches, name + " near you");
+}
+
 function searchBusiness() {
   const input = document.getElementById("search");
+  const result = document.getElementById("result");
 
-  if (!input) return;
+  if (!input || !result) return;
 
-  const query = input.value.trim().toLowerCase();
+  currentQuery = input.value.trim();
 
-  if (query === "") {
-    document.getElementById("result").classList.remove("show");
+  if (!currentQuery) {
+    result.classList.remove("show");
+    currentView = "Home";
     return;
   }
+
+  currentView = "Search";
+
+  const query = currentQuery.toLowerCase();
 
   const matches = businesses.filter(function (business) {
     return (
@@ -142,17 +189,7 @@ function searchBusiness() {
     );
   });
 
-  showBusinesses(matches, `Results for "${input.value.trim()}"`);
-}
-
-function filterCategory(category) {
-  const matches = businesses.filter(function (business) {
-    return business.category.toLowerCase() === category.toLowerCase();
-  });
-
-  showBusinesses(matches, `${category} near you`);
-
-  toast(`${category} selected`);
+  showBusinesses(matches, 'Results for "' + currentQuery + '"');
 }
 
 function toggleSave(name) {
@@ -160,96 +197,145 @@ function toggleSave(name) {
 
   if (index === -1) {
     savedBusinesses.push(name);
-    toast(`${name} saved ❤️`);
+    toast(name + " saved ❤️");
   } else {
     savedBusinesses.splice(index, 1);
-    toast(`${name} removed from saved`);
+    toast(name + " removed from saved");
   }
 
+  storeSavedBusinesses();
   refreshVisibleResults();
+  updateSaveButtons();
+}
+
+// Supports the save(this) buttons already present in index.html.
+function save(button) {
+  if (!button) return;
+
+  const card = button.closest(".business");
+  const nameElement = card
+    ? card.querySelector(".business-info h3")
+    : null;
+
+  if (!nameElement) return;
+
+  const name = nameElement.textContent.trim();
+  const isSaved = savedBusinesses.includes(name);
+
+  if (isSaved) {
+    savedBusinesses = savedBusinesses.filter(function (item) {
+      return item !== name;
+    });
+
+    toast(name + " removed from saved");
+  } else {
+    savedBusinesses.push(name);
+    toast(name + " saved ❤️");
+  }
+
+  storeSavedBusinesses();
+  updateSaveButtons();
+}
+
+function updateSaveButtons() {
+  document.querySelectorAll(".heart").forEach(function (button) {
+    const card = button.closest(".business");
+    const heading = card
+      ? card.querySelector(".business-info h3")
+      : null;
+
+    if (!heading) return;
+
+    const isSaved = savedBusinesses.includes(
+      heading.textContent.trim()
+    );
+
+    button.classList.toggle("saved", isSaved);
+    button.textContent = isSaved ? "♥" : "♡";
+  });
 }
 
 function refreshVisibleResults() {
-  const result = document.getElementById("result");
-
-  if (!result || !result.classList.contains("show")) return;
-
-  const title = document.getElementById("resultTitle");
-
-  if (title && title.textContent.startsWith("Results for")) {
-    searchBusiness();
+  if (currentView === "Search") {
+    const input = document.getElementById("search");
+    if (input) searchBusiness();
+  } else if (currentView === "Category") {
+    category(currentCategory);
+  } else if (currentView === "Saved") {
+    showSaved();
   }
 }
 
 function showSaved() {
+  currentView = "Saved";
+
   const saved = businesses.filter(function (business) {
     return savedBusinesses.includes(business.name);
   });
 
   showBusinesses(saved, "Your saved businesses");
-
-  if (saved.length === 0) {
-    toast("You haven't saved any businesses yet");
-  }
 }
 
 function showOffers() {
+  currentView = "Offers";
+
   const result = document.getElementById("result");
+  const resultTitle = document.getElementById("resultTitle");
+  const resultText = document.getElementById("resultText");
 
-  if (!result) return;
+  if (!result || !resultTitle || !resultText) return;
 
-  result.classList.add("show");
+  resultTitle.textContent = "Today's demo offers";
 
-  document.getElementById("resultTitle").textContent =
-    "Today's local offers";
-
-  document.getElementById("resultText").innerHTML = `
+  resultText.innerHTML = `
     <div class="card-list">
-      <div class="business-card">
+      <article class="business-card">
         <h3>☕ The Daily Brew</h3>
-        <p>Get 15% off your next coffee order.</p>
-      </div>
+        <p>Demo offer: 15% off your next coffee order.</p>
+      </article>
 
-      <div class="business-card">
+      <article class="business-card">
         <h3>👕 Urban Threads</h3>
-        <p>Buy 2 items and get 10% off.</p>
-      </div>
+        <p>Demo offer: Buy 2 items and get 10% off.</p>
+      </article>
 
-      <div class="business-card">
+      <article class="business-card">
         <h3>🥗 Green Bowl</h3>
-        <p>Healthy lunch combo available today.</p>
-      </div>
+        <p>Demo offer: Healthy lunch combo.</p>
+      </article>
     </div>
   `;
 
+  result.classList.add("show");
   result.scrollIntoView({
     behavior: "smooth",
     block: "center"
   });
-
-  toast("Showing nearby offers");
 }
 
 function showProfile() {
+  currentView = "Profile";
+
   const result = document.getElementById("result");
+  const resultTitle = document.getElementById("resultTitle");
+  const resultText = document.getElementById("resultText");
 
-  if (!result) return;
+  if (!result || !resultTitle || !resultText) return;
 
-  result.classList.add("show");
+  resultTitle.textContent = "Your Nearfolk profile";
 
-  document.getElementById("resultTitle").textContent =
-    "Your Nearfolk profile";
-
-  document.getElementById("resultText").innerHTML = `
+  resultText.innerHTML = `
     <div class="profile-card">
       <h2>👋 Welcome to Nearfolk</h2>
       <p>
         Discover local businesses, save your favourites
-        and find useful offers around you.
+        and explore local offers.
       </p>
+      <p>Saved places on this device: ${savedBusinesses.length}</p>
     </div>
   `;
 
+  result.classList.add("show");
   result.scrollIntoView({
     behavior: "smooth",
     block: "center"
@@ -261,9 +347,14 @@ function nav(button, name) {
     item.classList.remove("active");
   });
 
-  button.classList.add("active");
+  if (button) button.classList.add("active");
 
   if (name === "Home") {
+    currentView = "Home";
+
+    const result = document.getElementById("result");
+    if (result) result.classList.remove("show");
+
     window.scrollTo({
       top: 0,
       behavior: "smooth"
@@ -271,43 +362,30 @@ function nav(button, name) {
   }
 
   if (name === "Explore") {
-    document.getElementById("search").focus();
-    toast("Search local businesses");
+    currentView = "Home";
+
+    const search = document.getElementById("search");
+
+    if (search) {
+      search.focus();
+      search.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    }
+
+    toast("Search local demo businesses");
   }
 
-  if (name === "Offers") {
-    showOffers();
-  }
-
-  if (name === "Saved") {
-    showSaved();
-  }
-
-  if (name === "Profile") {
-    showProfile();
-  }
+  if (name === "Offers") showOffers();
+  if (name === "Saved") showSaved();
+  if (name === "Profile") showProfile();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const search = document.getElementById("search");
-
-  if (search) {
-    search.addEventListener("input", searchBusiness);
-  }
-
-  document.querySelectorAll(".category").forEach(function (button) {
-    button.addEventListener("click", function () {
-      const categoryName =
-        button.querySelector(".category-name")?.textContent ||
-        button.textContent.trim();
-
-      document.querySelectorAll(".category").forEach(function (item) {
-        item.classList.remove("active");
-      });
-
-      button.classList.add("active");
-
-      filterCategory(categoryName);
-    });
-  });
-});
+        
+  
+  
+  
+  
+  
+     
